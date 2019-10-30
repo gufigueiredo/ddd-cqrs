@@ -35,6 +35,11 @@ namespace Localiza.LocalRental.API.Application.CommandHandlers
                 return CommandResult.Error($"O veículo placa {request.NumeroPlaca} não foi encontrado");
 
             veiculo.Retirar(aluguel.Id.ToString(), request.DataHoraRetirada.Value);
+            if (veiculo.Invalid)
+            {
+                return CommandResult.Error(veiculo.Notifications);
+            }
+
             _veiculoRepository.Update(veiculo);
             await veiculo.RaiseEvents(_mediator);
 

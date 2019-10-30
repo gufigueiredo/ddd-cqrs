@@ -25,6 +25,7 @@ namespace Localiza.LocalRental.API.Application.Queries.Aluguel
             {
                 model.Add(new AluguelResourceCollectionModel()
                 {
+                    Id = entidade.Id.ToString(),
                     ClienteId = entidade.ClienteId,
                     VeiculoId = entidade.VeiculoId,
                     NumeroControle = entidade.NumeroControle,
@@ -44,12 +45,13 @@ namespace Localiza.LocalRental.API.Application.Queries.Aluguel
             {
                 var veiculo = _veiculoRepository.ObterPorId(entidade.VeiculoId);
 
-                model = new AluguelModel()
+                model = new AluguelModel
                 {
+                    Id = entidade.Id.ToString(),
                     ClienteId = entidade.ClienteId,
                     VeiculoId = entidade.VeiculoId,
-                    Veiculo = $"{veiculo.ModeloVeiculo.Montadora.Name} / {veiculo.ModeloVeiculo.Modelo}",
-                    Placa = veiculo.NumeroPlaca,
+                    Veiculo = veiculo != null ? $"{veiculo.ModeloVeiculo.Montadora.Name} / {veiculo.ModeloVeiculo.Modelo}" : null,
+                    Placa = veiculo?.NumeroPlaca,
                     NumeroControle = entidade.NumeroControle,
                     EfetuadaEm = entidade.EfetuadaEm,
                     DataFechamento = entidade.DataFechamento,

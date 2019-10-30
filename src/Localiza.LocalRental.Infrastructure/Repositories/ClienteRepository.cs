@@ -46,7 +46,7 @@ namespace Localiza.LocalRental.Infrastructure.Repositories
         {
             using (var db = new LiteRepository(_db.Context))
             {
-                var dbModel = _mapper.Map<FaturaDbModel>(entity);
+                var dbModel = _mapper.Map<ClienteDbModel>(entity);
                 db.Insert(dbModel);
             }
         }

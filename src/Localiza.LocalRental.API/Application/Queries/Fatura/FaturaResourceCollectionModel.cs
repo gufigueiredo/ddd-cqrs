@@ -5,7 +5,6 @@ namespace Localiza.LocalRental.API.Application.Queries.Fatura
     {
         public string NumeroControleAluguel { get; set; }
         public string ClienteId { get; set; }
-        public string NomeCliente { get; set; }
         public decimal? ValorTotal { get; set; }
         public DateTime? DataPagamento { get; set; }
     }

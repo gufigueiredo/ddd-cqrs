@@ -7,13 +7,11 @@ namespace Localiza.LocalRental.Domain.Events
     {
         public string NumeroControle { get; }
         public string ClienteId { get; }
-        public string VeiculoId { get; }
 
-        public AluguelEfetuado(string numeroControle, string clienteId, string veiculoId) 
+        public AluguelEfetuado(string numeroControle, string clienteId) 
         {
             NumeroControle = numeroControle;
             ClienteId = clienteId;
-            VeiculoId = veiculoId;
         }
     }
 }

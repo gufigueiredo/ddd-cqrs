@@ -8,9 +8,9 @@ namespace Localiza.LocalRental.Domain.Model.Fatura
         public DateTime DataPagamentoFatura { get; private set; }
         public string HashAutenticacao { get; private set; }
 
-        public PagamentoFatura(DateTime dataPagamento, string hashAutenticacao)
+        public PagamentoFatura(DateTime dataPagamentoFatura, string hashAutenticacao)
         {
-            DataPagamentoFatura = dataPagamento;
+            DataPagamentoFatura = dataPagamentoFatura;
             HashAutenticacao = hashAutenticacao;
         }
     }

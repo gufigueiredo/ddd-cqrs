@@ -30,4 +30,7 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="database.db" />
+  </ItemGroup>
 </Project>

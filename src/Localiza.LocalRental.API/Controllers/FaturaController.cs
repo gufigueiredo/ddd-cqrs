@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Localiza.LocalRental.API.Application.Commands;
 using Localiza.LocalRental.API.Application.Queries.Fatura;
-using Localiza.LocalRental.Domain.Model.Fatura;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SC.SDK.NetStandard.DomainCore.Commands;
@@ -23,17 +24,25 @@ namespace Localiza.LocalRental.API.Controllers
         }
 
         /// <summary>
-        /// Lista as faturas de um cliente
+        /// Lista faturas
         /// </summary>
         /// <param name="clienteId">Id do cliente</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult ListarPorCliente(string clienteId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Listar(string clienteId = null)
         {
-            if (string.IsNullOrWhiteSpace(clienteId))
-                return BadRequest();
-
-            var result = _faturaQueries.ListarFaturasPorCliente(clienteId);
+            IEnumerable<FaturaResourceCollectionModel> result;
+            if (!string.IsNullOrWhiteSpace(clienteId))
+            {
+                result = _faturaQueries.ListarFaturasPorCliente(clienteId);
+            }
+            else
+            {
+                result = _faturaQueries.ListarTodas();
+            }
             return Ok(result);
         }
 
@@ -43,12 +52,18 @@ namespace Localiza.LocalRental.API.Controllers
         /// <param name="id">Id da Fatura</param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult ObterPorId(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return BadRequest();
 
             var result = _faturaQueries.ObterFaturaPorId(id);
+            if (result == null)
+                return NotFound();
             return Ok(result);
         }
 
@@ -58,7 +73,11 @@ namespace Localiza.LocalRental.API.Controllers
         /// <param name="id">Id da fatura</param>
         /// <param name="command"></param>
         /// <returns></returns>
-        [HttpPost("{id}/pagar")]
+        [HttpPatch("{id}/pagar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> PagarFatura(string id, [FromBody] PagarFaturaCommand command)
         {
             command.FaturaId = id;

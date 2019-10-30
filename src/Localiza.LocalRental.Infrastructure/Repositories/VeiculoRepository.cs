@@ -5,17 +5,20 @@ using LiteDB;
 using Localiza.LocalRental.Domain.Model.Veiculo;
 using Localiza.LocalRental.Infrastructure.DataAccess;
 using Localiza.LocalRental.Infrastructure.DataModel.Collections;
+using Localiza.LocalRental.Infrastructure.Events;
 
 namespace Localiza.LocalRental.Infrastructure.Repositories
 {
     public class VeiculoRepository : IVeiculoRepository
     {
-        readonly ILiteDbContext _db;
-        readonly IMapper _mapper;
+        private readonly ILiteDbContext _db;
+        private readonly IEventStream _eventStream;
+        private readonly IMapper _mapper;
 
-        public VeiculoRepository(ILiteDbContext context, IMapper mapper)
+        public VeiculoRepository(ILiteDbContext context, IEventStream eventStream, IMapper mapper)
         {
             _db = context;
+            _eventStream = eventStream;
             _mapper = mapper;
         }
 
@@ -64,6 +67,7 @@ namespace Localiza.LocalRental.Infrastructure.Repositories
                 var dbModel = _mapper.Map<VeiculoDbModel>(entity);
                 db.Insert(dbModel);
             }
+            _eventStream.AddToStream(entity);
         }
 
         public void Remove(string objectKey)
@@ -81,6 +85,7 @@ namespace Localiza.LocalRental.Infrastructure.Repositories
                 var dbModel = _mapper.Map<VeiculoDbModel>(entity);
                 db.Update(dbModel);
             }
+            _eventStream.AddToStream(entity);
         }
     }
 }

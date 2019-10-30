@@ -22,7 +22,7 @@ namespace Localiza.LocalRental.Domain.Model.Aluguel
                 EfetuadaEm = DateTime.Now;
                 GerarNumeroDeControle();
                 Situacao = SituacaoAluguel.Aberto;
-                Opcionais = new List<Opcional>();
+                Opcionais = new List<Opcional>();                
             }
         }
 
@@ -30,7 +30,7 @@ namespace Localiza.LocalRental.Domain.Model.Aluguel
         public string VeiculoId { get; private set; }
         public string NumeroControle { get; private set; }
         public DateTime EfetuadaEm { get; private set; }
-        public DateTime DataHoraRetiradaVeiculo { get; private set; }
+        public DateTime? DataHoraRetiradaVeiculo { get; private set; }
         public DateTime? DataHoraDevolucaoVeiculo { get; private set; }
         public DateTime? DataFechamento { get; private set; }
         public SituacaoAluguel Situacao { get; private set; }
@@ -68,7 +68,6 @@ namespace Localiza.LocalRental.Domain.Model.Aluguel
                 VeiculoId = veiculoId;
                 Situacao = SituacaoAluguel.VeiculoRetirado;
                 DataHoraRetiradaVeiculo = dataHoraRetirada;
-                AddDomainEvent(new AluguelEfetuado(NumeroControle, ClienteId, VeiculoId));
             }
         }
 
@@ -78,25 +77,30 @@ namespace Localiza.LocalRental.Domain.Model.Aluguel
             Situacao = SituacaoAluguel.VeiculoDevolvido;
         }
 
+        public void Efetivar()
+        {
+            AddDomainEvent(new AluguelEfetuado(this.NumeroControle, this.ClienteId));
+        }
+
         public void Encerrar()
         {
             if (Situacao.Id < SituacaoAluguel.VeiculoDevolvido.Id)
             {
-                AddNotification("Situacao", $"A locação {NumeroControle} não pode ser baixada pois o veículo não foi devolvido");
+                AddNotification("Situacao", $"O aluguel {NumeroControle} não pode ser encerrado pois o veículo não foi devolvido");
             }
             DataFechamento = DateTime.Now;
             Situacao = SituacaoAluguel.Encerrado;
             AddDomainEvent(new AluguelEncerrado(this.Id.ToString()));
         }
 
-        private void GerarNumeroDeControle()
-        {
-            NumeroControle = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-        }
-
         public int HorasUtilizadas()
         {
             return (int)(DataHoraDevolucaoVeiculo - DataHoraRetiradaVeiculo).Value.TotalHours;
+        }
+
+        private void GerarNumeroDeControle()
+        {
+            NumeroControle = DateTime.Now.ToString("yyyyMMddHHmmssfff");
         }
     }
 }

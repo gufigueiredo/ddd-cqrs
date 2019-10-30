@@ -24,6 +24,7 @@ namespace Localiza.LocalRental.API.Application.CommandHandlers
             var aluguel = new Aluguel(request.ClienteId);
             if (aluguel.Valid)
             {
+                aluguel.Efetivar();
                 _aluguelRepsitory.Add(aluguel);
                 aluguel.RaiseEvents(_mediator);
 

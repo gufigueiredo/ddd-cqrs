@@ -5,17 +5,21 @@ using LiteDB;
 using Localiza.LocalRental.Domain.Model.Fatura;
 using Localiza.LocalRental.Infrastructure.DataAccess;
 using Localiza.LocalRental.Infrastructure.DataModel.Collections;
+using Localiza.LocalRental.Infrastructure.Events;
 
 namespace Localiza.LocalRental.Infrastructure.Repositories
 {
     public class FaturaRepository : IFaturaRepository
     {
-        readonly ILiteDbContext _db;
-        readonly IMapper _mapper;
+        private readonly ILiteDbContext _db;
+        private readonly IEventStream _eventStream;
+        private readonly IMapper _mapper;
 
-        public FaturaRepository(ILiteDbContext context, IMapper mapper)
+
+        public FaturaRepository(ILiteDbContext context, IEventStream eventStream, IMapper mapper)
         {
             _db = context;
+            _eventStream = eventStream;
             _mapper = mapper;
         }
 
@@ -67,6 +71,7 @@ namespace Localiza.LocalRental.Infrastructure.Repositories
                 var dbModel = _mapper.Map<FaturaDbModel>(entity);
                 db.Insert(dbModel);
             }
+            _eventStream.AddToStream(entity);
         }
 
         public void Remove(string objectKey)
@@ -84,6 +89,7 @@ namespace Localiza.LocalRental.Infrastructure.Repositories
                 var dbModel = _mapper.Map<FaturaDbModel>(entity);
                 db.Update(dbModel);
             }
+            _eventStream.AddToStream(entity);
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Localiza.LocalRental.API.Application.CommandHandlers
                 return CommandResult.Error($"O Aluguel {aluguel.NumeroControle} já está fechado.");
 
             aluguel.Encerrar();
+            _aluguelRepository.Update(aluguel);
             await aluguel.RaiseEvents(_mediator);
 
             return CommandResult.Ok();

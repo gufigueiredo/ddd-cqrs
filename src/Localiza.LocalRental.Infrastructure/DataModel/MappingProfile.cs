@@ -19,11 +19,18 @@ namespace Localiza.LocalRental.Infrastructure.DataModel
                     opt => opt.MapFrom(src => src.Opcionais.Select(
                         value =>  Enumeration.FromValue<Opcional>(value))
                     )
+                )
+                .ForMember(dest => dest.Situacao,
+                    opt => opt.MapFrom(src => Enumeration.FromValue<SituacaoAluguel>(src.Situacao)
+                    )
                 );
 
             CreateMap<Aluguel, AluguelDbModel>()
                 .ForMember(dest => dest.Opcionais,
                     opt => opt.MapFrom(src => src.Opcionais.Select(e => e.Id))
+                )
+                .ForMember(dest => dest.Situacao,
+                    opt => opt.MapFrom(src => src.Situacao.Id)
                 );
 
             //Veiculo
@@ -45,8 +52,10 @@ namespace Localiza.LocalRental.Infrastructure.DataModel
             //Fatura
             CreateMap<FaturaDbModel, Fatura>();
             CreateMap<Fatura, FaturaDbModel>();
+            CreateMap<PagamentoFaturaDbModel, PagamentoFatura>();
+            CreateMap<PagamentoFatura, PagamentoFaturaDbModel>();
             CreateMap<Cobranca, CobrancaDbModel>();
-            CreateMap<CobrancaDbModel, Cobranca>();
+            CreateMap<CobrancaDbModel, Cobranca>().DisableCtorValidation();
 
             //Cliente
             CreateMap<Cliente, ClienteDbModel>()
@@ -61,12 +70,12 @@ namespace Localiza.LocalRental.Infrastructure.DataModel
                 );
 
             CreateMap<ClienteDbModel, Cliente>()
+                .ForCtorParam("cpf",
+                    opt => opt.MapFrom(src => new CPF(src.Cpf)))
                 .ForMember(dest => dest.Telefone,
                     opt => opt.MapFrom(src => new Telefone(src.TelefoneDdd, src.TelefoneNumero))
-                )
-                .ForMember(dest => dest.Cpf,
-                    opt => opt.MapFrom(src => new CPF(src.Cpf))
                 );
+                
         }
     }
 }

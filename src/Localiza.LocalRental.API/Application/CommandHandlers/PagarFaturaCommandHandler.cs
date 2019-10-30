@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Localiza.LocalRental.API.Application.Commands;
 using Localiza.LocalRental.Domain.Model.Fatura;
-using Localiza.LocalRental.Infrastructure.Services;
+using Localiza.LocalRental.Infrastructure.Events;
 using SC.SDK.NetStandard.DomainCore.Commands;
 using SC.SDK.NetStandard.DomainCore.Handlers;
 

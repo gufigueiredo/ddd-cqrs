@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Localiza.LocalRental.Infrastructure.Services
+namespace Localiza.LocalRental.Infrastructure.Events
 {
     public class TransacaoPagamento
     {

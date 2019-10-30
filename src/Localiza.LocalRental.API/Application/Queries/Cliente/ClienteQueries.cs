@@ -39,6 +39,7 @@ namespace Localiza.LocalRental.API.Application.Queries.Cliente
         {
             return new ClienteResourceModel
             {
+                Id = entidade.Id.ToString(),
                 Nome = entidade.Nome,
                 Telefone = entidade.Telefone.TelefoneComDdd,
                 Cpf = entidade.Cpf.Numero,

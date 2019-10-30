@@ -14,7 +14,7 @@ namespace Localiza.LocalRental.Domain.Services
         public Fatura Processar(Aluguel aluguel, Veiculo veiculo, decimal valorHoraBaseAluguel,
             decimal valorHoraBaseOpcionais, ICalculadoraImpostos calculadoraImpostos)
         {
-            Fatura fatura = new Fatura(aluguel.NumeroControle);
+            Fatura fatura = new Fatura(aluguel.NumeroControle, aluguel.ClienteId);
 
             if (!aluguel.EstaEncerrado)
                 throw new DomainServiceException($"O Aluguel {aluguel.NumeroControle} não pôde ser faturado pois ainda não foi encerrado.");
@@ -37,6 +37,7 @@ namespace Localiza.LocalRental.Domain.Services
             }
 
             fatura.Calcular(calculadoraImpostos);
+            fatura.Emitir();
 
             return fatura;
         }

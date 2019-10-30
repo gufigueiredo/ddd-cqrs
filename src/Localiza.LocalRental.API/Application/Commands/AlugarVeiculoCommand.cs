@@ -14,6 +14,8 @@ namespace Localiza.LocalRental.API.Application.Commands
               .Requires()
               .IsNotNullOrEmpty(ClienteId, "ClienteId", "Id do Cliente deve ser informado")
             );
+            if (!Guid.TryParse(ClienteId, out _))
+                AddNotification("ClienteId", "ID do cliente inválido");
         }
     }
 }

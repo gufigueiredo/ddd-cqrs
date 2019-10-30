@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Localiza.LocalRental.Infrastructure.DataAccess;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Localiza.LocalRental.API
 {
@@ -25,8 +20,11 @@ namespace Localiza.LocalRental.API
 
                 try
                 {
-                    var context = services.GetRequiredService<ILiteDbContext>();
-                    DbSeedData.Seed(context);
+                    //var dbPath = $"{Directory.GetCurrentDirectory()}/database.db";
+                    //if (File.Exists(dbPath))
+                    //    File.Delete(dbPath);
+                    //var context = services.GetRequiredService<ILiteDbContext>();
+                    //DbSeedData.Seed(context);
                 }
                 catch (Exception ex)
                 {

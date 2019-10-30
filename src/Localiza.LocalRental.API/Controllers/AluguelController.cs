@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Localiza.LocalRental.Domain.Model.Aluguel;
 using Microsoft.AspNetCore.Http;
 using Localiza.LocalRental.API.Application.Queries.Aluguel;
+using SC.SDK.NetStandard.DomainCore.Commands;
 
 namespace Localiza.LocalRental.API.Controllers
 {
@@ -86,14 +87,14 @@ namespace Localiza.LocalRental.API.Controllers
         /// <summary>
         /// Fecha/Finaliza um aluguel
         /// </summary>
-        /// <param name="command"></param>
         /// <returns></returns>
-        [HttpPost("{id}/fechar")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [HttpPatch("{id}/fechar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Fechar([FromBody] FecharAluguelCommand command)
+        public async Task<IActionResult> Fechar(string id)
         {
+            FecharAluguelCommand command = new FecharAluguelCommand { AluguelId = id };
             command.Validate();
             if (command.Invalid)
             {
@@ -102,11 +103,12 @@ namespace Localiza.LocalRental.API.Controllers
             var response = await _mediator.Send(command);
             if (!response.Success)
             {
+                if (response.Reason == CommandResultError.ResourceNotFound)
+                    return NotFound();
+
                 return BadRequest(response.Message);
             }
-            return CreatedAtAction(nameof(GetPedidoAluguelPorId), new { id = response.ResourceId }, Guid.Parse(response.ResourceId));
+            return Ok();
         }
-
-        
     }
 }

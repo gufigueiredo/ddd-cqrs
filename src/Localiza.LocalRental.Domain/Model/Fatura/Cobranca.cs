@@ -7,6 +7,7 @@ namespace Localiza.LocalRental.Domain.Model.Fatura
 {
     public class Cobranca : Entity
     {
+        protected Cobranca() { }
         public Cobranca(TipoCobranca tipo, int qtdeHorasUtilizadas)
         {
             if (tipo == TipoCobranca.Aluguel)

@@ -26,6 +26,7 @@ namespace Localiza.LocalRental.API.Application.CommandHandlers
                 return CommandResult.Error($"O veículo placa {request.NumeroPlaca} não foi encontrado");
 
             veiculo.Devolver(request.DataHoraDevolucao);
+            _veiculoRepository.Update(veiculo);
             await veiculo.RaiseEvents(_mediator);
 
             return CommandResult.Ok();

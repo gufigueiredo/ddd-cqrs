@@ -7,14 +7,14 @@ namespace Localiza.LocalRental.Domain.Services
     {
         private const decimal ALIQUOTA = 3M;
 
-        public decimal AplicarImpostos(decimal value)
+        public decimal CalcularValorImpostos(decimal value)
         {
-            return value + ((value * ALIQUOTA) / 100);
+            return value * ALIQUOTA / 100;
         }
     }
 
     public interface ICalculadoraImpostos
     {
-        decimal AplicarImpostos(decimal value);
+        decimal CalcularValorImpostos(decimal value);
     }
 }

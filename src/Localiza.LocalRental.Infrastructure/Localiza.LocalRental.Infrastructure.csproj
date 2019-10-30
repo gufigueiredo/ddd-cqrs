@@ -10,6 +10,7 @@
     <Folder Include="DataModel\" />
     <Folder Include="DataModel\Collections\" />
     <Folder Include="Services\" />
+    <Folder Include="Events\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Localiza.LocalRental.Domain\Localiza.LocalRental.Domain.csproj" />

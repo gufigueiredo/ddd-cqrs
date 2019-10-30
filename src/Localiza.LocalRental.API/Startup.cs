@@ -1,16 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using AutoMapper;
 using Localiza.LocalRental.Domain.Model.Aluguel;
 using Localiza.LocalRental.Infrastructure.DataAccess;
@@ -22,7 +16,7 @@ using Localiza.LocalRental.API.Infrastructure;
 using Localiza.LocalRental.Domain.Model.Cliente;
 using Localiza.LocalRental.Domain.Model.Fatura;
 using Localiza.LocalRental.Domain.Model.Veiculo;
-using Localiza.LocalRental.Infrastructure.Services;
+using Localiza.LocalRental.Infrastructure.Events;
 using System.Reflection;
 using Localiza.LocalRental.API.Application.Queries.Aluguel;
 using Localiza.LocalRental.API.Application.Queries.Cliente;
@@ -43,6 +37,8 @@ namespace Localiza.LocalRental.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //AutoMapper;
@@ -70,6 +66,7 @@ namespace Localiza.LocalRental.API
             services.AddScoped<IVeiculoQueries, VeiculoQueries>();
             services.AddScoped<IGatewayDePagamento, GatewayDePagamento>();
             services.AddScoped<IFaturarAluguelService, FaturarAluguelService>();
+            services.AddScoped<IEventStream, EventStream>();
 
             //Mediator
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);

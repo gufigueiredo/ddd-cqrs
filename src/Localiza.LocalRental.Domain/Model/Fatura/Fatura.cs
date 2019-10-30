@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Localiza.LocalRental.Domain.Events;
 using Localiza.LocalRental.Domain.Services;
 using SC.SDK.NetStandard.DomainCore;
 
@@ -8,9 +9,10 @@ namespace Localiza.LocalRental.Domain.Model.Fatura
 {
     public class Fatura : Entity, IAggregateRoot
     {
-        public Fatura(string numeroControleAluguel)
+        public Fatura(string numeroControleAluguel, string clienteId)
         {
             NumeroControleAluguel = numeroControleAluguel;
+            ClienteId = clienteId;
             Cobrancas = new List<Cobranca>();
         }
 
@@ -43,7 +45,12 @@ namespace Localiza.LocalRental.Domain.Model.Fatura
         public void Calcular(ICalculadoraImpostos calculadoraImpostos)
         {
             ValorBruto = Cobrancas.Sum(c => c.ValorAFaturar);
-            ValorImpostos = calculadoraImpostos.AplicarImpostos(ValorBruto.Value);
+            ValorImpostos = calculadoraImpostos.CalcularValorImpostos(ValorBruto.Value);
+        }
+
+        public void Emitir()
+        {
+            AddDomainEvent(new FaturaEmitida(this.Id.ToString()));
         }
 
         public void IniciarTransacaoDePagamento(DateTime dataPagamento)
@@ -67,12 +74,14 @@ namespace Localiza.LocalRental.Domain.Model.Fatura
             if (Valid)
             {
                 Pagamento = new PagamentoFatura(DataInicioTransacaoPagamento.Value, hashAutenticacaoPagamento);
+                AddDomainEvent(new FaturaPaga(this.Id.ToString()));
             }
         }
 
         public void RejeitarTransacaoDePagamento()
         {
             DataInicioTransacaoPagamento = null;
+            AddDomainEvent(new TransacaoPagamentoRejeitada(this.Id.ToString()));
         }
     }
 }
