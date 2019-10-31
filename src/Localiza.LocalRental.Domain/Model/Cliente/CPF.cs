@@ -10,7 +10,7 @@ namespace Localiza.LocalRental.Domain.Model.Cliente
         {
             AddNotifications(new Contract()
               .Requires()
-              .IsNotNull(numero, "Numero", "CPF deve ser informado")
+              .IsNotNullOrWhiteSpace(numero, "Numero", "CPF deve ser informado")
               .HasLen(numero, 11, "Numero", "CPF deve conter 11 posições")
             );
 

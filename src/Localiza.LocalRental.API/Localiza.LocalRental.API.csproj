@@ -5,7 +5,13 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <PropertyGroup>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>
+      <noWarn>1591</noWarn>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <NoWarn>1591;1701;1702;1705</NoWarn>
     <DocumentationFile>bin\Debug\netcoreapp2.2\Localiza.LocalRental.API.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>

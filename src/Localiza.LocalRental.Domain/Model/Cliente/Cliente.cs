@@ -26,7 +26,6 @@ namespace Localiza.LocalRental.Domain.Model.Cliente
                 Nome = nome;
                 Cpf = cpf;
             }
-            
         }
 
         public string Nome { get; private set; }

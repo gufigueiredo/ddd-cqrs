@@ -12,6 +12,17 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1"><IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 <PrivateAssets>all</PrivateAssets>
 </PackageReference>
+    <PackageReference Include="Moq" Version="4.13.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Domain\" />
+    <Folder Include="Infrastructure\" />
+    <Folder Include="Domain\Cliente\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Localiza.LocalRental.API\Localiza.LocalRental.API.csproj" />
+    <ProjectReference Include="..\Localiza.LocalRental.Domain\Localiza.LocalRental.Domain.csproj" />
+    <ProjectReference Include="..\Localiza.LocalRental.Infrastructure\Localiza.LocalRental.Infrastructure.csproj" />
+  </ItemGroup>
 </Project>
