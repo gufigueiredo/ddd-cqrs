@@ -27,6 +27,7 @@ Além disso, o padrão CQRS foi implementado visando a separação do workflow d
 LocalRental é um projeto baseado em uma ideia simples de negócio, onde temos uma pequena loja de aluguel de carros. Para se alugar um carro, basta o cliente se dirigir até a loja, solicitar o aluguel de um veículo, retirar o veículo do pátio e devolvê-lo na data estipulada. Após a devolução, a loja gera uma fatura do período utilizado e o cliente realiza o pagamento da mesma, finalizando assim o fluxo de aluguel.
 
 # Domínio
+
 ## Raízes de agregação
 
 Olhando para o fluxo de negócio, temos inicialmente as seguintes raízes agregações (aggregate-root):
@@ -40,10 +41,10 @@ Olhando para o fluxo de negócio, temos inicialmente as seguintes raízes agrega
 
 Após identificar as raízes de agregação, é necessário definir o workflow de como o negócio funciona. Uma técnica muito útil utilizada neste cenário é o [Event Storming](https://en.wikipedia.org/wiki/Event_storming), um pequeno workshop onde rapidamente se define o que acontece no domínio na linha do tempo.
 Após a realização do Event Storming, temos o seguinte resultado:
-(Imagem do event-storming) 
+![enter image description here](https://raw.githubusercontent.com/gufigueiredo/ddd-cqrs/master/docs/local-rental-event-storming.png)
 
 ## Domain Model
-
+![enter image description here](https://raw.githubusercontent.com/gufigueiredo/ddd-cqrs/master/docs/domain-model.png)
 # Arquitetura
 Conforme pontuado, o CQRS foi utilizado na segregação das camadas de leitura e escrita, resultando em workflows bem definidos, encapsulados e isolados de comandos (write side) e queries (read side). A imagem a seguir exemplifica o modelo de implementação do CQRS:
 
